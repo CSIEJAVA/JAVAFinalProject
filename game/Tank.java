@@ -29,7 +29,7 @@ public abstract class Tank {
 	private int ammo;
 	private long CD;
 	
-		//abstract method
+	//abstract method
 	protected abstract void loadImage();
 	public abstract int getMAX_ARMOR();
 	public abstract double getROTATION_RAD(); 
@@ -118,6 +118,13 @@ public abstract class Tank {
 //			da = 1.5*Math.toRadians(this.getROTATION_RAD());
 //		if(keybuffer.contains(controlset.get(2)))
 //			da = 1.5*Math.toRadians(-this.getROTATION_RAD());
+		
+		if(this.ammo == 0) {
+			if(System.currentTimeMillis() >= CD) {
+				this.ammo = this.getMAX_AMMO();
+			}
+		}
+		
 		if(keybuffer.contains(controlset.get(0))) {
 			if(keybuffer.contains(controlset.get(3))) {
 				dx = getMOVING_SPEED()*Math.sin(this.angle+da);
@@ -269,11 +276,7 @@ public abstract class Tank {
 				CD = System.currentTimeMillis()+getREFILL_CD();
 			}
 		}
-		else if(this.ammo == 0) {
-			if(System.currentTimeMillis() >= CD) {
-				this.ammo = this.getMAX_AMMO();
-			}
-		}
+
 	}
 	
 	public int right()
