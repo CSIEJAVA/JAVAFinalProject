@@ -144,6 +144,8 @@ public class Map {
 			wt14.setIgnoreShell();
 			wt15.setIgnoreShell();
 			wt16.setIgnoreShell();
+			wt17.setIgnoreShell();
+			wt18.setIgnoreShell();
 			wallist.add(w1);
 			//wallist.add(w2);
 			wallist.add(w3);
