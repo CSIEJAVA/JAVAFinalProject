@@ -112,6 +112,35 @@ public class Map {
 			wallist.add(w2);
 			wallist.add(w3);
 		}
+		if(mapname.equals("Monster")) {
+			setP1start(100,100, 3*Math.PI/4);
+			setP2start(600,500, -Math.PI/4);
+			MoveWall w1 = new MoveWall(500, 195,"src/resources/bedrock.png");
+			MoveWall w2 = new MoveWall(400, 275, "src/resources/bedrock.png");
+			MoveWall w3 = new MoveWall(300, 355, "src/resources/bedrock.png");
+			MoveWall w4 = new MoveWall(300, 195,"src/resources/bedrock.png");
+			MoveWall w5 = new MoveWall(200, 275, "src/resources/bedrock.png");
+			MoveWall w6 = new MoveWall(100, 355, "src/resources/bedrock.png");
+			Wall wt7 = new Wall(195,400,"src/resources/water.jpg");
+			//Wall w8 = new Wall(275,450, "src/resources/bedrock.png");
+			//Wall w9 = new Wall( 355,500, "src/resources/bedrock.png");
+			//Wall w10 = new Wall( 195,100,"src/resources/bedrock.png");
+			//Wall w11 = new Wall(275,100, "src/resources/bedrock.png");
+			//Wall w12 = new Wall(355,100, "src/resources/bedrock.png");
+			wt7.setIgnoreShell();
+			wallist.add(w1);
+			wallist.add(w2);
+			wallist.add(w3);
+			wallist.add(w4);
+			wallist.add(w5);
+			wallist.add(w6);
+			wallist.add(wt7);
+			//wallist.add(w8);
+			//wallist.add(w9);
+			//wallist.add(w10);
+			//wallist.add(w11);
+			//wallist.add(w12);
+		}
 		if(mapname.equals("test1")) {
 			setP1start(100,280, 2*Math.PI/4);
 			setP2start(560,280, -2*Math.PI/4);

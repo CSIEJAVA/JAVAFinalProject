@@ -24,6 +24,7 @@ public class BtnListener implements ActionListener{
 		maplist.add("default");
 		maplist.add("test1");
 		maplist.add("test2");
+		maplist.add("Monster");
 		curmap=0;
 		
 		tanklist = new ArrayList<String>();

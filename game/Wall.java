@@ -54,4 +54,10 @@ public class Wall {
 	public boolean getIgnoreShell() {
 		return IgnoreShell;
 	}
+	public void setX(double px) {
+		this.x = px;
+	}
+	public void setY(double py) {
+		this.y = py;
+	}
 }
