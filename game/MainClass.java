@@ -5,20 +5,14 @@ import javax.swing.JFrame;
 
 public class MainClass extends JFrame {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public Board gamebord;
-	
 	public MainClass() {
 		initUI();
 	}
 	
 	private void initUI() {
-		add(gamebord = new Board());
+		add(new Board());
 		setSize(750,600);
-		setTitle("JAVA Project Tank game");
+		setTitle("Application");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);

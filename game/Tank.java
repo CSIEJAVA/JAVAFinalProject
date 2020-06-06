@@ -2,177 +2,74 @@ package game;
 
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import java.awt.Rectangle;
 
-public abstract class Tank {
+public class Tank {
 	
-	private double dx;
-	private double dy;
-	private double da;
-	private double x;
-	private double y;
-	private int w;
-	private int h;
-	private double angle;
-	private List<Shell> tankshell;
-	private List<Wall> wallist;
-	private List<Integer> keybuffer;
-	private List<Integer> controlset;
-	private List<Tank> playerlist;
-	private Image image;
-	private int armor;
-	private int ammo;
-	private long CD;
+	protected double dx;
+	protected double dy;
+	protected double da;
+	protected double x;
+	protected double y;
+	protected int w;
+	protected int h;
+	protected double angle;
+	protected List<Shell> tankshell;
+	protected Image image;
+	protected List<wall> wallist;
+	protected List<kit> kitlist;
+	protected List<Integer> keybuffer;
 	
-	//abstract method
-	protected abstract void loadImage();
-	public abstract int getMAX_ARMOR();
-	public abstract double getROTATION_RAD(); 
-	public abstract double getMOVING_SPEED();
-	public abstract int getMAX_AMMO();
-	public abstract int getCD_AMMO();
-	public abstract int getDAMAGE();
-	public abstract int getSHELL_SPEED();
-	public abstract long getREFILL_CD();
+	//*****
+	protected int health;
+	protected int damage;
+	public void takedamage(int a) {health-=a;} //health-a
+	public void heal(int a) {health+=a;}
 	
+	//******
+	protected int ammo;
+	protected int cdammo;
+	final protected double ROTATION_RAD = 0.5;
+	final protected int MAX_AMMO = 4;
+	final protected int CD_AMMO = 6;
 	
-	public Tank(int startx, int starty,double startangle, List<Wall> wl, List<Tank> pl, String ctrset) {
-		armor = getMAX_ARMOR();
+	public Tank(int startx, int starty,double startangle, List<wall> wl, List<kit> k1) {
 		x = startx;
 		y = starty;
 		angle = startangle;
 		this.wallist = wl;
-		this.playerlist = pl;
+		this.kitlist = k1;
 		loadImage();
 		tankshell = new ArrayList<Shell>();
 		keybuffer = new ArrayList<Integer>();
-		controlset = new ArrayList<Integer>();
-		if(ctrset.equals("set1")) {
-			controlset.add(KeyEvent.VK_UP);
-			controlset.add(KeyEvent.VK_DOWN);
-			controlset.add(KeyEvent.VK_LEFT);
-			controlset.add(KeyEvent.VK_RIGHT);
-			controlset.add(KeyEvent.VK_SPACE);
-		}
-		else if(ctrset.equals("set2")) {
-			controlset.add(KeyEvent.VK_W);
-			controlset.add(KeyEvent.VK_S);
-			controlset.add(KeyEvent.VK_A);
-			controlset.add(KeyEvent.VK_D);
-			controlset.add(KeyEvent.VK_F);
-		}
-		ammo = getMAX_AMMO();
-		CD = 0;
+		ammo = MAX_AMMO;
+		cdammo = CD_AMMO;
 	}
-	
-	public void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
+
+	protected void loadImage() {
 		
-		if(key == controlset.get(2)) 
-			keybuffer.add(controlset.get(2));
-		if(key == controlset.get(3))
-			keybuffer.add(controlset.get(3));
-		if(key == controlset.get(0))
-			keybuffer.add(controlset.get(0));
-		if(key == controlset.get(1))
-			keybuffer.add(controlset.get(1));
-	}
-	
-	public void keyReleased(KeyEvent e) {
+		ImageIcon ii = new ImageIcon("src/resources/tanker.png");
+		image = ii.getImage();
 		
-		int key = e.getKeyCode();
-		
-		if(key == controlset.get(2)) {
-			keybuffer.removeAll(Arrays.asList(controlset.get(2)));
-			da = 0;
-		}
-		if(key == controlset.get(3)) {
-			keybuffer.removeAll(Arrays.asList(controlset.get(3)));
-			da = 0;
-		}
-		if(key == controlset.get(0)) {
-			keybuffer.removeAll(Arrays.asList(controlset.get(0)));
-			dy = 0;
-			dx = 0;
-			da = 0;
-		}
-		if(key == controlset.get(1)) {
-			keybuffer.removeAll(Arrays.asList(controlset.get(1)));
-			dx = 0;
-			dy = 0;
-			da = 0;
-		}
-		if(key == controlset.get(4)) {
-			fire();
-		}
+		w = image.getWidth(null);
+		h = image.getHeight(null);
 	}
 	
 	public void move() {
-		
-//		if(keybuffer.contains(controlset.get(3)))
-//			da = 1.5*Math.toRadians(this.getROTATION_RAD());
-//		if(keybuffer.contains(controlset.get(2)))
-//			da = 1.5*Math.toRadians(-this.getROTATION_RAD());
-		
-		if(this.ammo == 0) {
-			if(System.currentTimeMillis() >= CD) {
-				this.ammo = this.getMAX_AMMO();
-			}
-		}
-		
-		if(keybuffer.contains(controlset.get(0))) {
-			if(keybuffer.contains(controlset.get(3))) {
-				dx = getMOVING_SPEED()*Math.sin(this.angle+da);
-				dy = getMOVING_SPEED()*Math.cos(this.angle+da);
-				da = Math.toRadians(this.getROTATION_RAD());
-			}
-			else if(keybuffer.contains(controlset.get(2))) {
-				dx = getMOVING_SPEED()*Math.sin(this.angle+da);
-				dy = getMOVING_SPEED()*Math.cos(this.angle+da);
-				da = Math.toRadians(-this.getROTATION_RAD());
-			}
-			else {
-				dx = getMOVING_SPEED()*Math.sin(this.angle+da);
-				dy = getMOVING_SPEED()*Math.cos(this.angle+da);
-				da = 0;
-			}
-		}
-		if(keybuffer.contains(controlset.get(1))) {
-			if(keybuffer.contains(controlset.get(3))) {
-				dx = -getMOVING_SPEED()*Math.sin(this.angle+da);
-				dy = -getMOVING_SPEED()*Math.cos(this.angle+da);
-				da = Math.toRadians(this.getROTATION_RAD());
-			}
-			else if(keybuffer.contains(controlset.get(2))) {
-				dx = -getMOVING_SPEED()*Math.sin(this.angle+da);
-				dy = -getMOVING_SPEED()*Math.cos(this.angle+da);
-				da = Math.toRadians(-this.getROTATION_RAD());
-			}
-			else {
-				dx = -getMOVING_SPEED()*Math.sin(this.angle+da);
-				dy = -getMOVING_SPEED()*Math.cos(this.angle+da);
-				da = 0;
-			}
-		}
-		
-
-		machinegun();//Override if you need machine gun
-		
 		angle += da;
 		if(angle>2*Math.PI)
 			angle -= 2*Math.PI;
 		else if(angle<-2*Math.PI)
 			angle += 2*Math.PI;
-		if(!detectCollision()){
-			x += dx;
-			y -= dy;
-		}
-		this.updateShell();
+		x += dx;
+		y -= dy;
 	}
 	
 	public double getX() {
@@ -181,12 +78,10 @@ public abstract class Tank {
 	}
 	
 	public double getY() {
-		
 		return y;		
 	}
 	
-	public double getAngle() {
-		
+	public double getangle() {
 		return angle;
 	}
 	
@@ -194,17 +89,6 @@ public abstract class Tank {
 		
 		return w;
 	}
-	
-	public void setWidth(int pw) {
-		
-		this.w = pw;
-	}
-	
-	public void setHeight(int ph) {
-		
-		this.h = ph;
-	}
-	
 	public int getHeight() {
 		
 		return h;
@@ -213,67 +97,143 @@ public abstract class Tank {
 		
 		return image;
 	}
-	public void setImage(Image pi) {
-		this.image = pi;
-	}
 	
 	public List<Shell> getShell() {
 		return tankshell;
 	}
 	
-	public void setAmmo(int pa) {
-		this.ammo = pa;
-	}
-	public int getAmmo() {
-		return this.ammo;
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		
+		if(key == KeyEvent.VK_LEFT) 
+			keybuffer.add(KeyEvent.VK_LEFT);
+		if(key == KeyEvent.VK_RIGHT)
+			keybuffer.add(KeyEvent.VK_RIGHT);
+		if(key == KeyEvent.VK_UP)
+			keybuffer.add(KeyEvent.VK_UP);
+		if(key == KeyEvent.VK_DOWN)
+			keybuffer.add(KeyEvent.VK_DOWN);
+		
+		
+		if(keybuffer.contains(KeyEvent.VK_RIGHT))
+			da = Math.toRadians(this.ROTATION_RAD);
+		if(keybuffer.contains(KeyEvent.VK_LEFT))
+			da = Math.toRadians(-this.ROTATION_RAD);
+		if(keybuffer.contains(KeyEvent.VK_UP)) {
+			if(keybuffer.contains(KeyEvent.VK_RIGHT)) {
+				dx = Math.sin(this.angle+da);
+				dy = Math.cos(this.angle+da);
+				da = Math.toRadians(this.ROTATION_RAD);
+
+			}
+			else if(keybuffer.contains(KeyEvent.VK_LEFT)) {
+				dx = Math.sin(this.angle+da);
+				dy = Math.cos(this.angle+da);
+				da = Math.toRadians(-this.ROTATION_RAD);
+			}
+			else {
+				dx = Math.sin(this.angle+da);
+				dy = Math.cos(this.angle+da);
+				da = 0;
+			}
+			if(detectCollision(wallist))
+			{
+				System.out.println("BOOM");
+			}
+			
+			//kit collision
+			if(detectKitCollision(kitlist))
+			{
+				System.out.println("Get kit!");
+				if(health <50) {
+					this.health +=5;
+				}
+				
+				System.out.println(this.health);
+			}
+		}
+		if(keybuffer.contains(KeyEvent.VK_DOWN)) {
+			if(keybuffer.contains(KeyEvent.VK_RIGHT)) {
+				dx = -Math.sin(this.angle+da);
+				dy = -Math.cos(this.angle+da);
+				da = Math.toRadians(this.ROTATION_RAD);
+			}
+			else if(keybuffer.contains(KeyEvent.VK_LEFT)) {
+				dx = -Math.sin(this.angle+da);
+				dy = -Math.cos(this.angle+da);
+				da = Math.toRadians(-this.ROTATION_RAD);
+			}
+			else {
+				dx = -Math.sin(this.angle+da);
+				dy = -Math.cos(this.angle+da);
+				da = 0;
+			}
+			if(detectCollision(wallist))
+			{
+				System.out.println("BOOM");
+			}
+			
+			if(detectKitCollision(kitlist))
+			{
+				System.out.println("Get kit!");
+				if(health <50) {
+					this.health +=5;
+				}
+				
+				System.out.println(this.health);
+			}
+		}
+
 	}
 	
-	public List<Integer> getControlSet() {
-		return controlset;
-	}
-	
-	public List<Integer> getKeyBuffer(){
-		return keybuffer;
-	}
-	public List<Wall> getWallist(){
-		return wallist;
-	}
-	public void setDX(double d) {
-		dx = d;
-	}
-	public void setDY(double d) {
-		dy = d;
-	}
-	public void setDA(double d) {
-		da = d;
-	}
-	public double getDX() {
-		return dx;
-	}
-	public double getDY() {
-		return dy;
-	}
-	public double getDA() {
-		return da;
-	}
-	public long getCDLast() {
-		return CD-System.currentTimeMillis();
-	}
-	public void setCD(long cd) {
-		this.CD = cd;
-	}
-	public long getCD() {
-		return this.CD;
+	public void keyReleased(KeyEvent e) {
+		
+		int key = e.getKeyCode();
+		
+		if(key == KeyEvent.VK_LEFT) {
+			keybuffer.removeAll(Arrays.asList(KeyEvent.VK_LEFT));
+			da = 0;
+		}
+		if(key == KeyEvent.VK_RIGHT) {
+			System.out.println("release r");
+			keybuffer.removeAll(Arrays.asList(KeyEvent.VK_RIGHT));
+			da = 0;
+		}
+		if(key == KeyEvent.VK_UP) {
+			System.out.println("release up");
+			keybuffer.removeAll(Arrays.asList(KeyEvent.VK_UP));
+			dy = 0;
+			dx = 0;
+			da = 0;
+		}
+		if(key == KeyEvent.VK_DOWN) {
+			keybuffer.removeAll(Arrays.asList(KeyEvent.VK_DOWN));
+			dx = 0;
+			dy = 0;
+			da = 0;
+		}
+		if(key == KeyEvent.VK_SPACE) {
+			fire();
+		}
 	}
 	
 	public void fire() {
 		if(this.ammo >= 1)
 		{
 			this.ammo--;
-			Shell temp = new Shell(x+(w/2)+((h+4)*Math.sin(angle))/2, y+(h/2)-((h+4)*Math.cos(angle)/2), angle,wallist, getDAMAGE(), getSHELL_SPEED());
+			Shell temp = new Shell(x+(w/2)+((h+4)*Math.sin(angle))/2, y+(h/2)-((h+4)*Math.cos(angle)/2), angle);
 			tankshell.add(temp);
-			if(this.ammo == 0) {
-				CD = System.currentTimeMillis()+getREFILL_CD();
+			System.out.println("Roger");
+	
+		}
+		else // reload
+		{
+			System.out.println("Reloading");
+			this.cdammo--;
+			if(this.cdammo <= 0)
+			{
+				this.cdammo = this.CD_AMMO;
+				this.ammo = this.MAX_AMMO;
 			}
 		}
 
@@ -287,69 +247,53 @@ public abstract class Tank {
 	{
 		return (int)(y+h);
 	}
-	public void takedamage(int a) {
-		armor-=a;
-	}
-	public void heal(int a) {
-		armor+=a;
-	}
-	public int getArmor() {
-		return armor;
-	}
-	protected void resetArmor() {
-		this.armor = getMAX_ARMOR();
-		ammo = getMAX_AMMO();
-	}
-	protected void setPosition(double px, double py, double pangle) {
-		this.x = px;
-		this.y = py;
-		this.angle = pangle;
-	}
-	public boolean detectCollision()
+	public boolean detectCollision(List<wall> w)
 	{
+		Rectangle rr;
 		Rectangle target ;
-		Rectangle rr = new Rectangle((int)((this.x)+dx), (int)((this.y)-dy), this.w, this.h);
-
-		//border collision
-		if(rr.intersectsLine(new Line2D.Float(0,0,750,0))
-				|| rr.intersectsLine(new Line2D.Float(0,0,0,600))
-				|| rr.intersectsLine(new Line2D.Float(0,570,750,570))
-				|| rr.intersectsLine(new Line2D.Float(750,0,750,600))) {
-			return true;
-		}
-		
-		//wall collision
-		for(Wall obj: wallist) {
+		for(wall obj: w)
+		{
+			rr = new Rectangle((int)this.x, (int)this.y, this.w, this.h);
 			target = new Rectangle((int)obj.getX(), (int)obj.getY(), (int)obj.getW(),(int)obj.getH());
-			if(rr.intersects(target)) {
+			if(rr.intersects(target))
+			{
 				return true;
 			}
-		}
-		
-		//player collision
-		for(Tank obj: playerlist) {
-			target = new Rectangle((int)obj.getX(), (int)obj.getY(), obj.getWidth(), obj.getHeight());
-			if(rr.intersects(target)) {
-				return true;
-			}
-		}
-		
+			
+		} // end for
 		rr = null; target = null;
 		return false;
 	}
 	
-	public void updateShell() {
-		Iterator<Shell> it = tankshell.iterator();
-		while(it.hasNext()) {
-			boolean status = it.next().getStatus();
-			if(status == false)
-				it.remove();
-		}
+	//detect kit
+	public boolean detectKitCollision(List<kit> k)
+	{
+		Rectangle rr;
+		Rectangle target ;
+		
+		//Iterator<kit> itr = k.iterator();
+		List<kit> found = new ArrayList<kit>();
+		kit toDelete = null;
+		int index = 0;
+		for(kit obj: k)
+		{
+			rr = new Rectangle((int)this.x, (int)this.y, this.w, this.h);
+			target = new Rectangle((int)obj.getX(), (int)obj.getY(), (int)obj.getW(),(int)obj.getH());
+			if(rr.intersects(target))
+			{
+				toDelete = obj; 
+				k.remove(index);
+				toDelete.finalize();
+				return true;
+				//obj.remove();
+			}
+			index++;
+		} // end for
+		rr = null; target = null;
+		return false;
 	}
 	
-	public void machinegun() {
-		return;
-	}
+	
 	
 
 }

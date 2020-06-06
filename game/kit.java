@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Image;
 
+import javax.swing.ImageIcon;
+
 public class kit {
 
 	private double x;
@@ -12,8 +14,33 @@ public class kit {
 	private Image image;
 	
 	public kit(int init_x, int init_y) {
+		
+		
+		ImageIcon kk = new ImageIcon("src/resources/kit38.png");
+		image = kk.getImage();
+	
 		x = init_x;
 		y = init_y;
+		w = image.getWidth(null);
+		h = image.getHeight(null);
+	}
+	
+	public double getX() {
+		return x;
+	}
+	public double getY() {
+		return y;
+	}
+	public double getW() {
+		return w;
+	}
+	public double getH() {
+		return h;
+	}
+	
+	
+	public Image getImage() {
+		return image;
 	}
 	
 	public int get_inc_health() {
@@ -23,4 +50,17 @@ public class kit {
 	{
 		return (int)(x + w);
 	}
+	@Override
+	public void finalize()  
+	{
+		try
+		{
+			super.finalize();
+		}
+		catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }
