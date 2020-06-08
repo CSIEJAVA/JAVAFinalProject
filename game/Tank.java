@@ -3,6 +3,7 @@ package game;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -11,43 +12,47 @@ import java.awt.Rectangle;
 
 public abstract class Tank {
 	
-	private double dx;
-	private double dy;
-	private double da;
-	private double x;
-	private double y;
-	private int w;
-	private int h;
-	private double angle;
-	private List<Shell> tankshell;
-	private List<Wall> wallist;
-	private List<Integer> keybuffer;
-	private List<Integer> controlset;
-	private List<Tank> playerlist;
-	private Image image;
-	private int armor;
-	private int ammo;
-	private long CD;
+	protected double dx; 
+	protected double dy;
+	protected double da;
+	protected double x;
+	protected double y;
+	protected int w;
+	protected int h;
+	protected double angle;
+	protected List<Shell> tankshell;
+	protected List<wall> wallist;
+	// katsmin
+	protected List<BoostPlatform> bplist;
+	protected List<Integer> keybuffer;
+	protected List<Integer> controlset;
+	protected Image image;
+	protected int armor;
+	protected int damage;
+	protected int ammo;
+	protected int cdammo;
+	//katsmin
+	Rectangle tankRectangle;
+	protected double basicX = dx;
+	protected double basicY = dy;
 	
-	//abstract method
-	protected abstract void loadImage();
-	public abstract int getMAX_ARMOR();
+	public abstract int getMAX_HEALTH();
 	public abstract double getROTATION_RAD(); 
 	public abstract double getMOVING_SPEED();
 	public abstract int getMAX_AMMO();
 	public abstract int getCD_AMMO();
 	public abstract int getDAMAGE();
 	public abstract int getSHELL_SPEED();
-	public abstract long getREFILL_CD();
 	
+	//abstract method
+	protected abstract void loadImage();
 	
-	public Tank(int startx, int starty,double startangle, List<Wall> wl, List<Tank> pl, String ctrset) {
-		armor = getMAX_ARMOR();
+	public Tank(int startx, int starty,double startangle, List<wall> wl, String ctrset) {
+		armor = getMAX_HEALTH();
 		x = startx;
 		y = starty;
 		angle = startangle;
 		this.wallist = wl;
-		this.playerlist = pl;
 		loadImage();
 		tankshell = new ArrayList<Shell>();
 		keybuffer = new ArrayList<Integer>();
@@ -67,8 +72,11 @@ public abstract class Tank {
 			controlset.add(KeyEvent.VK_F);
 		}
 		ammo = getMAX_AMMO();
-		CD = 0;
+		cdammo = getCD_AMMO();
+		
+		
 	}
+
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -112,29 +120,25 @@ public abstract class Tank {
 		}
 	}
 	
-	public void move() {
+	public void move() 
+	{
 		
-//		if(keybuffer.contains(controlset.get(3)))
-//			da = 1.5*Math.toRadians(this.getROTATION_RAD());
-//		if(keybuffer.contains(controlset.get(2)))
-//			da = 1.5*Math.toRadians(-this.getROTATION_RAD());
-		
-		if(this.ammo == 0) {
-			if(System.currentTimeMillis() >= CD) {
-				this.ammo = this.getMAX_AMMO();
-			}
-		}
-		
+		if(keybuffer.contains(controlset.get(3)))
+			da = 3*Math.toRadians(this.getROTATION_RAD());
+		if(keybuffer.contains(controlset.get(2)))
+			da = 3*Math.toRadians(-this.getROTATION_RAD());
 		if(keybuffer.contains(controlset.get(0))) {
 			if(keybuffer.contains(controlset.get(3))) {
 				dx = getMOVING_SPEED()*Math.sin(this.angle+da);
 				dy = getMOVING_SPEED()*Math.cos(this.angle+da);
 				da = Math.toRadians(this.getROTATION_RAD());
+				System.out.println("upright");
 			}
 			else if(keybuffer.contains(controlset.get(2))) {
 				dx = getMOVING_SPEED()*Math.sin(this.angle+da);
 				dy = getMOVING_SPEED()*Math.cos(this.angle+da);
 				da = Math.toRadians(-this.getROTATION_RAD());
+				System.out.println("upleft");
 			}
 			else {
 				dx = getMOVING_SPEED()*Math.sin(this.angle+da);
@@ -160,9 +164,6 @@ public abstract class Tank {
 			}
 		}
 		
-
-		machinegun();//Override if you need machine gun
-		
 		angle += da;
 		if(angle>2*Math.PI)
 			angle -= 2*Math.PI;
@@ -171,6 +172,15 @@ public abstract class Tank {
 		if(!detectCollision()){
 			x += dx;
 			y -= dy;
+			if(detectTouchSmoke(null))
+			{
+				if(!detectCollision(2))
+				{
+					x += 2*dx;
+					y -= 2*dy;
+				}
+				
+			}
 		}
 		this.updateShell();
 	}
@@ -185,7 +195,7 @@ public abstract class Tank {
 		return y;		
 	}
 	
-	public double getAngle() {
+	public double getangle() {
 		
 		return angle;
 	}
@@ -194,17 +204,6 @@ public abstract class Tank {
 		
 		return w;
 	}
-	
-	public void setWidth(int pw) {
-		
-		this.w = pw;
-	}
-	
-	public void setHeight(int ph) {
-		
-		this.h = ph;
-	}
-	
 	public int getHeight() {
 		
 		return h;
@@ -213,57 +212,9 @@ public abstract class Tank {
 		
 		return image;
 	}
-	public void setImage(Image pi) {
-		this.image = pi;
-	}
 	
 	public List<Shell> getShell() {
 		return tankshell;
-	}
-	
-	public void setAmmo(int pa) {
-		this.ammo = pa;
-	}
-	public int getAmmo() {
-		return this.ammo;
-	}
-	
-	public List<Integer> getControlSet() {
-		return controlset;
-	}
-	
-	public List<Integer> getKeyBuffer(){
-		return keybuffer;
-	}
-	public List<Wall> getWallist(){
-		return wallist;
-	}
-	public void setDX(double d) {
-		dx = d;
-	}
-	public void setDY(double d) {
-		dy = d;
-	}
-	public void setDA(double d) {
-		da = d;
-	}
-	public double getDX() {
-		return dx;
-	}
-	public double getDY() {
-		return dy;
-	}
-	public double getDA() {
-		return da;
-	}
-	public long getCDLast() {
-		return CD-System.currentTimeMillis();
-	}
-	public void setCD(long cd) {
-		this.CD = cd;
-	}
-	public long getCD() {
-		return this.CD;
 	}
 	
 	public void fire() {
@@ -272,8 +223,15 @@ public abstract class Tank {
 			this.ammo--;
 			Shell temp = new Shell(x+(w/2)+((h+4)*Math.sin(angle))/2, y+(h/2)-((h+4)*Math.cos(angle)/2), angle,wallist, getDAMAGE(), getSHELL_SPEED());
 			tankshell.add(temp);
-			if(this.ammo == 0) {
-				CD = System.currentTimeMillis()+getREFILL_CD();
+	
+		}
+		else // reload
+		{
+			this.cdammo--;
+			if(this.cdammo <= 0)
+			{
+				this.cdammo = getCD_AMMO();
+				this.ammo = getMAX_AMMO();
 			}
 		}
 
@@ -289,6 +247,7 @@ public abstract class Tank {
 	}
 	public void takedamage(int a) {
 		armor-=a;
+		System.out.println(armor);
 	}
 	public void heal(int a) {
 		armor+=a;
@@ -296,9 +255,10 @@ public abstract class Tank {
 	public int getArmor() {
 		return armor;
 	}
-	protected void resetArmor() {
-		this.armor = getMAX_ARMOR();
+	protected void setArmor(int a) {
+		this.armor = a;
 		ammo = getMAX_AMMO();
+		cdammo = getCD_AMMO();
 	}
 	protected void setPosition(double px, double py, double pangle) {
 		this.x = px;
@@ -319,25 +279,64 @@ public abstract class Tank {
 		}
 		
 		//wall collision
-		for(Wall obj: wallist) {
+		for(wall obj: wallist) {
 			target = new Rectangle((int)obj.getX(), (int)obj.getY(), (int)obj.getW(),(int)obj.getH());
-			if(rr.intersects(target)) {
+			if(rr.intersects(target))
 				return true;
-			}
-		}
-		
-		//player collision
-		for(Tank obj: playerlist) {
-			target = new Rectangle((int)obj.getX(), (int)obj.getY(), obj.getWidth(), obj.getHeight());
-			if(rr.intersects(target)) {
-				return true;
-			}
 		}
 		
 		rr = null; target = null;
 		return false;
 	}
-	
+	//katsmin
+	public boolean detectCollision(int multiple)
+	{
+		Rectangle target ;
+		Rectangle rr = new Rectangle((int)((this.x)+multiple*dx), (int)((this.y)-multiple*dy), this.w, this.h);
+
+		//border collision
+		if(rr.intersectsLine(new Line2D.Float(0,0,750,0))
+				|| rr.intersectsLine(new Line2D.Float(0,0,0,600))
+				|| rr.intersectsLine(new Line2D.Float(0,570,750,570))
+				|| rr.intersectsLine(new Line2D.Float(750,0,750,600))) {
+			return true;
+		}
+		
+		//wall collision
+		for(wall obj: wallist) {
+			target = new Rectangle((int)obj.getX(), (int)obj.getY(), (int)obj.getW(),(int)obj.getH());
+			if(rr.intersects(target))
+				return true;
+		}
+		
+		rr = null; target = null;
+		return false;
+	}
+	//katsmin
+	public boolean detectTouchSmoke(List<BoostPlatform> bpl)
+	{
+		if(bplist == null)
+		{
+			System.out.println("blp null");
+		}
+		if(bplist == null)
+		{
+			bplist = bpl;
+		}
+		Rectangle target ;
+		Rectangle rr = new Rectangle((int)((this.x)+dx), (int)((this.y)-dy), this.w, this.h);
+
+		
+		//wall collision
+		for(BoostPlatform obj: bplist) {
+			target = new Rectangle((int)obj.getX(), (int)obj.getY(), (int)obj.getW(),(int)obj.getH());
+			if(rr.intersects(target))
+				return true;
+		}
+		
+		rr = null; target = null;
+		return false;
+	}
 	public void updateShell() {
 		Iterator<Shell> it = tankshell.iterator();
 		while(it.hasNext()) {
@@ -346,11 +345,12 @@ public abstract class Tank {
 				it.remove();
 		}
 	}
-	
-	public void machinegun() {
-		return;
+	//katsmin not called
+	public void setBoostList(List<BoostPlatform> bplist)
+	{
+		this.bplist = bplist;
 	}
-	
+
 
 }
 

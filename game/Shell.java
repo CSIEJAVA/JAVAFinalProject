@@ -17,13 +17,13 @@ public class Shell{
 	protected Image image;
 	protected boolean hasshot;
 	protected boolean shellStatus; //still exist or not
-	protected List<Wall> wallist;
+	protected List<wall> wallist;
 	protected Line2D traject;
 
 	private int DAMAGE;
 	private int SPEED;
 	
-	public Shell(double px, double py, double pa, List<Wall> wl, int damage, int speed) {
+	public Shell(double px, double py, double pa, List<wall> wl, int damage, int speed) {
 		this.set_position(px,py,pa);
 		this.loadImage();
 		wallist = wl;
@@ -90,10 +90,8 @@ public class Shell{
 		}
 		
 		//wall collision
-		for(Wall obj: wallist)
+		for(wall obj: wallist)
 		{
-			if(obj.getIgnoreShell() == true)
-				continue;
 			target = new Rectangle((int)obj.getX(), (int)obj.getY(), (int)obj.getW(),(int)obj.getH());
 			if(traject.intersects(target))
 				return false;

@@ -1,21 +1,21 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
 public class Tank2 extends Tank{
 	
-	final private int MAX_HEALTH= 2000;
+	final private int MAX_HEALTH= 200;
 	final private double ROTATION_RAD = 0.65;
-	final private double MOVING_SPEED = 0.65;
+	final private double MOVING_SPEED = 0.9;
 	final private int MAX_AMMO = 1;
 	final private int CD_AMMO = 3;
-	final private int DAMAGE = 300;
-	final private int SHELL_SPEED = 20;
-	final private long REFILL_CD = 3000;
+	final private int DAMAGE = 20;
+	final private int SHELL_SPEED = 13;
 	
-	public int getMAX_ARMOR() {
+	public int getMAX_HEALTH() {
 		return this.MAX_HEALTH;
 	}
 	public double getROTATION_RAD() {
@@ -36,23 +36,24 @@ public class Tank2 extends Tank{
 	public int getSHELL_SPEED() {
 		return this.SHELL_SPEED;
 	}
-	public long getREFILL_CD() {
-		return this.REFILL_CD;
-	}
 	
-	public Tank2(int startx, int starty, double startangle, List<Wall> wl,List<Tank> pl, String ctrset) {
-		super(startx, starty, startangle, wl, pl, ctrset);
+	public Tank2(int startx, int starty, double startangle, List<wall> wl, String ctrset) {
+		super(startx, starty, startangle, wl, ctrset);
+		this.wallist = wl;
 		loadImage();
-		resetArmor();
-		setAmmo(this.MAX_AMMO);
+		tankshell = new ArrayList<Shell>();
+		keybuffer = new ArrayList<Integer>();
+		ammo = MAX_AMMO;
+		cdammo = CD_AMMO;
 	}
 	
 	@Override
 	protected void loadImage() {
 		
 		ImageIcon ii = new ImageIcon("src/resources/heavytank.png");
-		setImage(ii.getImage());
-		setWidth(this.getImage().getWidth(null));
-		setHeight(this.getImage().getHeight(null));
+		image = ii.getImage();
+		
+		w = image.getWidth(null);
+		h = image.getHeight(null);
 	}
 }
