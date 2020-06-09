@@ -43,6 +43,13 @@ public class Map {
 		setMap("default");
 	}
 	
+	public Map(String name) {
+		kitlist = new ArrayList<Kit>();
+		wallist = new ArrayList<Wall>();
+		bplist = new ArrayList<BoostPlatform>();
+		setMap(name);
+	}
+	
 	protected void loadImage() {
 		
 		ImageIcon ii = new ImageIcon("src/resources/grass.png");
@@ -108,6 +115,10 @@ public class Map {
 		this.p2startx = x2;
 		this.p2starty = y2;
 		this.p2stangle = a2;
+	}
+	
+	public void resetMap() {
+		setMap(this.name);
 	}
 	
 	public void setMap(String mapname) {
@@ -201,6 +212,8 @@ public class Map {
 			wt14.setIgnoreShell();
 			wt15.setIgnoreShell();
 			wt16.setIgnoreShell();
+			wt17.setIgnoreShell();
+			wt18.setIgnoreShell();
 
 			wallist.add(wt7);
 			wallist.add(wt8);

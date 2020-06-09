@@ -443,6 +443,7 @@ public class Board extends JPanel implements ActionListener{
 		tanker2.resetArmor();
     	tanker1.getShell().clear();
     	tanker2.getShell().clear();
+    	background.resetMap();
 		tanker1.setPosition(background.getp1StartX(),background.getp1StartY(), background.getp1StartA());
 		tanker2.setPosition(background.getp2StartX(),background.getp2StartY(), background.getp2StartA());
 		playerlist1.clear();
