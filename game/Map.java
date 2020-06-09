@@ -158,16 +158,67 @@ public class Map {
 			wallist.add(w1);
 			wallist.add(w2);
 		}
-		
-		
-		
+		if(mapname.equals("Monster")) {
+			setP1start(100,100, 3*Math.PI/4);
+			setP2start(600,500, -Math.PI/4);
+			MoveWall w1 = new MoveWall(100, 180,"src/resources/bedrock.png");
+			//MoveWall w2 = new MoveWall(400, 275, "src/resources/bedrock.png");
+			MoveWall w3 = new MoveWall(450, 360, "src/resources/bedrock.png");
+			MoveWall w4 = new MoveWall(200, 180,"src/resources/bedrock.png");
+			//MoveWall w5 = new MoveWall(400, 400, "src/resources/bedrock.png");
+			MoveWall w6 = new MoveWall(350, 360, "src/resources/bedrock.png");
+			Wall wt7 = new Wall(200,450,"src/resources/semiwater.jpg");
+			Wall wt8 = new Wall(300,450, "src/resources/semiwater.jpg");
+			Wall wt9 = new Wall( 400,450, "src/resources/semiwater.jpg");
+			Wall wt10 = new Wall( 500,450,"src/resources/semiwater.jpg");
+			Wall wt11 = new Wall(100,450, "src/resources/semiwater.jpg");
+			Wall wt12 = new Wall(200,150,"src/resources/semiwater.jpg");
+			Wall wt13 = new Wall(200,250, "src/resources/semiwater.jpg");
+			Wall wt14 = new Wall( 300,250, "src/resources/semiwater.jpg");
+			Wall wt15 = new Wall( 400,250,"src/resources/semiwater.jpg");
+			Wall wt16 = new Wall(100,150, "src/resources/semiwater.jpg");
+			Wall wt17 = new Wall( 570,250,"src/resources/semiwater2.jpg");
+			Wall wt18 = new Wall(65,150, "src/resources/semiwater2.jpg");
+
+			wt7.setIgnoreShell();
+			wt8.setIgnoreShell();
+			wt9.setIgnoreShell();
+			wt10.setIgnoreShell();
+			wt11.setIgnoreShell();
+			wt12.setIgnoreShell();
+			wt13.setIgnoreShell();
+			wt14.setIgnoreShell();
+			wt15.setIgnoreShell();
+			wt16.setIgnoreShell();
+			wallist.add(w1);
+			//wallist.add(w2);
+			wallist.add(w3);
+			wallist.add(w4);
+			//wallist.add(w5);
+			wallist.add(w6);
+			wallist.add(wt7);
+			wallist.add(wt8);
+			wallist.add(wt9);
+			wallist.add(wt10);
+			wallist.add(wt11);
+			wallist.add(wt12);
+			wallist.add(wt13);
+			wallist.add(wt14);
+			wallist.add(wt15);
+			wallist.add(wt16);
+			wallist.add(wt17);
+			wallist.add(wt18);
+			
+			int[] cloudpos = {450,145,345,145};
+			DrawBoostArea("Monster", cloudpos, "src/resources/cloud.png");
+		}
 	}
 	//katsmin
 	
 	public void DrawBoostArea(String mapName, int[] xys, String resourcePath)
 	{
 		int[] position = xys;
-		int[] pos = {65,345};//position of cloud
+		int[] pos = {65,345};//default position of cloud
 		if(xys == null || xys.length == 0)
 		{
 			position = pos;

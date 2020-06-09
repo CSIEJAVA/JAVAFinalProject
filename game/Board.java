@@ -188,6 +188,37 @@ public class Board extends JPanel implements ActionListener{
         t.translate(tanker1.getX(), tanker1.getY());
         t.scale(1, 1); // scale = 1
 		g2d.drawImage(tanker1.getImage(), t, this);
+        
+
+        //tanker2 graph
+        t2.rotate(tanker2.getAngle(), tanker2.getX()+tanker2.getWidth()/2, tanker2.getY()+tanker2.getHeight()/2);
+        t2.translate(tanker2.getX(), tanker2.getY());
+        t2.scale(1, 1); // scale = 1
+		g2d.drawImage(tanker2.getImage(), t2, this);
+        
+        
+        //wall graph
+        if(background.getwall()!=null) {
+        	for(Wall obj: background.getwall()) {
+        		w.setTransform(initTrans);
+        		w.translate(obj.getX(), obj.getY());
+        		w.scale(1, 1); // scale = 1
+        		g2d.drawImage(obj.getImage(),w, this);
+        	}
+        }
+        
+        //shell for tanker1 graph
+        if(tanker1.getShell()!=null) {
+        	for(Shell obj: tanker1.getShell()) {
+        		s.setTransform(initTrans);
+        		s.rotate(obj.getAngle(), obj.getX(), obj.getY());
+        		s.translate(obj.getX(), obj.getY());
+        		s.scale(1, 1); // scale = 1
+        		g2d.drawImage(obj.getImage(), s, this);
+        	}
+        }
+        
+        
 		//tanker1 Armor graph
 		gsc.setColor(Color.BLACK);
         gsc.drawRect((int)tanker1.getX()-10, (int)tanker1.getY()-20,40, 5);
@@ -215,23 +246,15 @@ public class Board extends JPanel implements ActionListener{
         	}
         }
         
-
-        //tanker2 graph
-        t2.rotate(tanker2.getAngle(), tanker2.getX()+tanker2.getWidth()/2, tanker2.getY()+tanker2.getHeight()/2);
-        t2.translate(tanker2.getX(), tanker2.getY());
-        t2.scale(1, 1); // scale = 1
-		g2d.drawImage(tanker2.getImage(), t2, this);
-		gsc.setColor(Color.BLACK);
+      	//tanker2 Armor graph\		gsc.setColor(Color.BLACK);
         gsc.drawRect((int)tanker2.getX()-10, (int)tanker2.getY()-20,40, 5);
       	gsc.setColor(Color.RED);
-      	//tanker2 Armor graph
         if(tanker2.getArmor() > 0) {
         	for(int i=(int)tanker2.getY()-20; i<(int)tanker2.getY()-20+5;i++) {
         		gsc.drawLine((int)tanker2.getX()-10,i,((int)tanker2.getX()+(int)((double)tanker2.getArmor()/(double)tanker2.getMAX_ARMOR()*40))-10,i);
         	}
         }
         //tanker2 Ammo graph
-        //tanker1 Ammo graph
         gsc.setColor(Color.GRAY);
         if(tanker2.getAmmo()>0) {
         	for(int i=(int)tanker2.getY()-15; i<(int)tanker2.getY()-15+2;i++) {
@@ -250,26 +273,6 @@ public class Board extends JPanel implements ActionListener{
         }
         
         
-        //wall graph
-        if(background.getwall()!=null) {
-        	for(Wall obj: background.getwall()) {
-        		w.setTransform(initTrans);
-        		w.translate(obj.getX(), obj.getY());
-        		w.scale(1, 1); // scale = 1
-        		g2d.drawImage(obj.getImage(),w, this);
-        	}
-        }
-        
-        //shell for tanker1 graph
-        if(tanker1.getShell()!=null) {
-        	for(Shell obj: tanker1.getShell()) {
-        		s.setTransform(initTrans);
-        		s.rotate(obj.getAngle(), obj.getX(), obj.getY());
-        		s.translate(obj.getX(), obj.getY());
-        		s.scale(1, 1); // scale = 1
-        		g2d.drawImage(obj.getImage(), s, this);
-        	}
-        }
         
         //shell for tanker2 graph
         if(tanker2.getShell()!=null) {
@@ -387,6 +390,13 @@ public class Board extends JPanel implements ActionListener{
 	private void updateTanker() {
 		tanker1.move();
 		tanker2.move();
+		//Wall moving
+		for(Wall obj: background.getwall()) {
+			if(obj instanceof MoveWall) {
+				((MoveWall) obj).Move();
+				System.out.println(obj.getX());
+			}
+		}
 	}
 	
 	private void updateShell() {

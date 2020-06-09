@@ -37,6 +37,12 @@ public class Wall {
 	public double getH() {
 		return h;
 	}
+	public void setX(double px) {
+		x = px;
+	}
+	public void setY(double py) {
+		y = py;
+	}
 	public Image getImage() {
 		return image;
 	}
