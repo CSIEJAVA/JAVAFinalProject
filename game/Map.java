@@ -201,12 +201,7 @@ public class Map {
 			wt14.setIgnoreShell();
 			wt15.setIgnoreShell();
 			wt16.setIgnoreShell();
-			wallist.add(w1);
-			//wallist.add(w2);
-			wallist.add(w3);
-			wallist.add(w4);
-			//wallist.add(w5);
-			wallist.add(w6);
+
 			wallist.add(wt7);
 			wallist.add(wt8);
 			wallist.add(wt9);
@@ -219,6 +214,12 @@ public class Map {
 			wallist.add(wt16);
 			wallist.add(wt17);
 			wallist.add(wt18);
+			wallist.add(w1);
+			//wallist.add(w2);
+			wallist.add(w3);
+			wallist.add(w4);
+			//wallist.add(w5);
+			wallist.add(w6);
 			
 			kitlist.add(new Kit(300,300));
 			

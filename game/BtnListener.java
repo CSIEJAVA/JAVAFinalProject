@@ -76,25 +76,25 @@ public class BtnListener implements ActionListener{
 		}
 		if(comStr.equals("nextTank1")) {
 			curtank1++;
-			if(curtank1 >= maplist.size())
+			if(curtank1 >= tanklist.size())
 				curtank1 = 0;
 			this.gameboard.setTankType(tanklist.get(curtank1), "tanker1");
 		}
 		if(comStr.equals("lastTank1")) {
 			curtank1++;
-			if(curtank1 >= maplist.size())
+			if(curtank1 >= tanklist.size())
 				curtank1 = 0;
 			this.gameboard.setTankType(tanklist.get(curtank1), "tanker1");
 		}
 		if(comStr.equals("nextTank2")) {
 			curtank2++;
-			if(curtank2 >= maplist.size())
+			if(curtank2 >= tanklist.size())
 				curtank2 = 0;
 			this.gameboard.setTankType(tanklist.get(curtank2), "tanker2");
 		}
 		if(comStr.equals("lastTank2")) {
 			curtank2++;
-			if(curtank2 >= maplist.size())
+			if(curtank2 >= tanklist.size())
 				curtank2 = 0;
 			this.gameboard.setTankType(tanklist.get(curtank2),"tanker2");
 		}
