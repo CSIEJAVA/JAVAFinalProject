@@ -25,6 +25,7 @@ public abstract class Tank {
 	private List<Integer> keybuffer;
 	private List<Integer> controlset;
 	private List<Tank> playerlist;
+	private List<Kit> kitlist;
 	private Image image;
 	private int armor;
 	private int ammo;
@@ -42,13 +43,14 @@ public abstract class Tank {
 	public abstract long getREFILL_CD();
 	
 	
-	public Tank(int startx, int starty,double startangle, List<Wall> wl, List<Tank> pl, String ctrset) {
+	public Tank(int startx, int starty,double startangle, List<Wall> wl, List<Tank> pl, List<Kit> kl, String ctrset) {
 		armor = getMAX_ARMOR();
 		x = startx;
 		y = starty;
 		angle = startangle;
 		this.wallist = wl;
 		this.playerlist = pl;
+		this.kitlist = kl;
 		loadImage();
 		tankshell = new ArrayList<Shell>();
 		keybuffer = new ArrayList<Integer>();
@@ -182,6 +184,18 @@ public abstract class Tank {
 
 			}
 		}
+		
+		if(detectKitCollision(kitlist))
+		{
+			System.out.println("Get kit!");
+			if(armor+5 < this.getArmor()) {
+				this.armor +=500;
+			}
+			else if(armor+500 >= this.getArmor()){
+				this.resetArmor();
+			}
+		}
+		
 		this.updateShell();
 	}
 	
@@ -394,6 +408,33 @@ public abstract class Tank {
 				return true;
 			}
 
+		rr = null; target = null;
+		return false;
+	}
+
+	public boolean detectKitCollision(List<Kit> k)
+	{
+		Rectangle rr;
+		Rectangle target ;
+
+		//Iterator<kit> itr = k.iterator();
+		List<Kit> found = new ArrayList<Kit>();
+		Kit toDelete = null;
+		int index = 0;
+		for(Kit obj: k)
+		{
+			rr = new Rectangle((int)this.x, (int)this.y, this.w, this.h);
+			target = new Rectangle((int)obj.getX(), (int)obj.getY(), (int)obj.getW(),(int)obj.getH());
+			if(rr.intersects(target))
+			{
+				toDelete = obj; 
+				k.remove(index);
+				toDelete.finalize();
+				return true;
+				//obj.remove();
+			}
+			index++;
+		} // end for
 		rr = null; target = null;
 		return false;
 	}

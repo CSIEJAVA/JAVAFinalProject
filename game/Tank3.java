@@ -43,8 +43,8 @@ public class Tank3 extends Tank{
 		return this.REFILL_CD;
 	}
 	
-	public Tank3(int startx, int starty, double startangle, List<Wall> wl,List<Tank> pl, String ctrset) {
-		super(startx, starty, startangle, wl, pl, ctrset);
+	public Tank3(int startx, int starty, double startangle, List<Wall> wl,List<Tank> pl,List<Kit>kl, String ctrset) {
+		super(startx, starty, startangle, wl, pl, kl, ctrset);
 		loadImage();
 		resetArmor();
 		setAmmo(this.MAX_AMMO);

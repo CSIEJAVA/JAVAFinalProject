@@ -141,10 +141,10 @@ public class Board extends JPanel implements ActionListener{
 		playerlist2 = new ArrayList<Tank>();
 		playerlist2.add(tanker1);
 		//start x, start y, start angle, wall, playerlist, controlset
-		tanker1 = new Tank1(100,100, 3*Math.PI/4,background.getwall(),playerlist1, "set1"); 
+		tanker1 = new Tank1(100,100, 3*Math.PI/4,background.getwall(),playerlist1, background.getKit(), "set1"); 
 		tanker1.setBoostList(background.getBoostPlatformList());
 
-		tanker2 = new Tank1(600,500, -Math.PI/4,background.getwall(),playerlist2, "set2");
+		tanker2 = new Tank1(600,500, -Math.PI/4,background.getwall(),playerlist2, background.getKit(), "set2");
 		tanker2.setBoostList(background.getBoostPlatformList());
 		timer = new Timer(DELAY, this);
 		timer.start();
@@ -285,7 +285,7 @@ public class Board extends JPanel implements ActionListener{
         	}
         }
         
-        //katsmin boostplatform
+        //katsmin boostplatform graph
         if(background.getBoostPlatformList() != null)
         {
         	for(BoostPlatform obj: background.getBoostPlatformList())
@@ -296,9 +296,14 @@ public class Board extends JPanel implements ActionListener{
         		g2d.drawImage(obj.getImage(), w, this);
         	}
         }
-        else
-        {
-        	System.out.println("is null");
+       
+        if(background.getKit()!=null) {
+        	for(Kit obj: background.getKit()) {
+        		w.setTransform(initTrans);
+        		w.translate(obj.getX(), obj.getY());
+        		w.scale(1, 1); // scale = 1
+        		g2d.drawImage(obj.getImage(),w, this);
+        	}
         }
 
         
@@ -465,16 +470,16 @@ public class Board extends JPanel implements ActionListener{
 		}
 		
 		if(typename.equals("tank1")) {
-			temp = new Tank1(100,100, 3*Math.PI/4,background.getwall(),plylist, cset); 
+			temp = new Tank1(100,100, 3*Math.PI/4,background.getwall(),plylist, background.getKit(), cset); 
 			temp.setBoostList(background.getBoostPlatformList());
 		}
 		else if(typename.equals("tank2")) {
-			temp = new Tank2(100,100, 3*Math.PI/4,background.getwall(),plylist, cset); 
+			temp = new Tank2(100,100, 3*Math.PI/4,background.getwall(),plylist,background.getKit(), cset); 
 			temp.setBoostList(background.getBoostPlatformList());
 
 		}
 		else if(typename.equals("tank3")) {
-			temp = new Tank3(100,100, 3*Math.PI/4,background.getwall(),plylist, cset);
+			temp = new Tank3(100,100, 3*Math.PI/4,background.getwall(),plylist, background.getKit() ,cset);
 			temp.setBoostList(background.getBoostPlatformList());
 		}
 		else {

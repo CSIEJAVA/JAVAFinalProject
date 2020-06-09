@@ -11,7 +11,7 @@ public class Map {
 	private int w;
 	private int h;
  	protected List<BoostPlatform> bplist;
-	private List<kit> kitlist;
+	private List<Kit> kitlist;
  	private List<Wall> wallist;
  	private Image image;
 	private String name;
@@ -36,9 +36,10 @@ public class Map {
 		loadImage();
 		x = 400;
 		y = 300;
-		kitlist = new ArrayList<kit>();
+		kitlist = new ArrayList<Kit>();
 		wallist = new ArrayList<Wall>();
 		bplist = new ArrayList<BoostPlatform>();
+		
 		setMap("default");
 	}
 	
@@ -70,6 +71,10 @@ public class Map {
 	public List<BoostPlatform> getBoostPlatformList()
 	{
 		return this.bplist;
+	}
+	
+	public List<Kit> getKit(){
+		return this.kitlist;
 	}
 	
 	public String getName() {
@@ -148,6 +153,12 @@ public class Map {
 			wallist.add(wt5);
 			wallist.add(wt6);
 			
+			kitlist.add(new Kit(250, 250));
+			kitlist.add(new Kit(50,50));
+			kitlist.add(new Kit(50,250));
+			kitlist.add(new Kit(400, 250));
+			kitlist.add(new Kit(400,50));
+			kitlist.add(new Kit(475,250));
 			this.DrawBoostArea("test1", null, "src/resources/cloud.png");
 		}
 		if(mapname.equals("test2")) {
@@ -208,6 +219,8 @@ public class Map {
 			wallist.add(wt16);
 			wallist.add(wt17);
 			wallist.add(wt18);
+			
+			kitlist.add(new Kit(300,300));
 			
 			int[] cloudpos = {450,145,345,145};
 			DrawBoostArea("Monster", cloudpos, "src/resources/cloud.png");
