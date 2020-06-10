@@ -4,27 +4,20 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-public class Wall {
-	
-	private double x;
-	private double y;
-	private Image image;
-	private double w;
-	private double h;
-	private boolean IgnoreShell;
-	
-	public Wall(double wallx, double wally, String filepath) {
-		
+public class BoostPlatform {
+	protected double x;
+	protected double y;
+	protected Image image;
+	protected double w;
+	protected double h;
+	public BoostPlatform(double xx, double yy, String filepath)
+	{
 		ImageIcon ii = new ImageIcon(filepath);
 		image = ii.getImage();
-	
-		x = wallx;
-		y = wally;
+		x = xx; y = yy; 
 		w = image.getWidth(null);
 		h = image.getHeight(null);
-		IgnoreShell = false;
 	}
-
 	public double getX() {
 		return x;
 	}
@@ -37,12 +30,6 @@ public class Wall {
 	public double getH() {
 		return h;
 	}
-	public void setX(double px) {
-		x = px;
-	}
-	public void setY(double py) {
-		y = py;
-	}
 	public Image getImage() {
 		return image;
 	}
@@ -53,11 +40,5 @@ public class Wall {
 	public int bottom()
 	{
 		return (int)(y+h);
-	}
-	public void setIgnoreShell() {
-		this.IgnoreShell = true;
-	}
-	public boolean getIgnoreShell() {
-		return IgnoreShell;
 	}
 }

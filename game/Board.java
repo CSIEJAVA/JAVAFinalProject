@@ -10,6 +10,7 @@ import java.awt.Rectangle;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Event;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
@@ -42,6 +43,7 @@ public class Board extends JPanel implements ActionListener{
 	public static final int NEXT = 4;
 	public static final int MENU = 5;
 	public static final int RESTART = 6;
+	public static final int PAUSE = 7;
 	
 	private List<JButton> menubtnlist;
 	private List<JButton> returnbtnlist;
@@ -139,8 +141,11 @@ public class Board extends JPanel implements ActionListener{
 		playerlist2 = new ArrayList<Tank>();
 		playerlist2.add(tanker1);
 		//start x, start y, start angle, wall, playerlist, controlset
-		tanker1 = new Tank1(100,100, 3*Math.PI/4,background.getwall(),playerlist1, "set1"); 
-		tanker2 = new Tank1(600,500, -Math.PI/4,background.getwall(),playerlist2, "set2");
+		tanker1 = new Tank1(100,100, 3*Math.PI/4,background.getwall(),playerlist1, background.getKit(), "set1"); 
+		tanker1.setBoostList(background.getBoostPlatformList());
+
+		tanker2 = new Tank1(600,500, -Math.PI/4,background.getwall(),playerlist2, background.getKit(), "set2");
+		tanker2.setBoostList(background.getBoostPlatformList());
 		timer = new Timer(DELAY, this);
 		timer.start();
 	}
@@ -183,6 +188,37 @@ public class Board extends JPanel implements ActionListener{
         t.translate(tanker1.getX(), tanker1.getY());
         t.scale(1, 1); // scale = 1
 		g2d.drawImage(tanker1.getImage(), t, this);
+        
+
+        //tanker2 graph
+        t2.rotate(tanker2.getAngle(), tanker2.getX()+tanker2.getWidth()/2, tanker2.getY()+tanker2.getHeight()/2);
+        t2.translate(tanker2.getX(), tanker2.getY());
+        t2.scale(1, 1); // scale = 1
+		g2d.drawImage(tanker2.getImage(), t2, this);
+        
+        
+        //wall graph
+        if(background.getwall()!=null) {
+        	for(Wall obj: background.getwall()) {
+        		w.setTransform(initTrans);
+        		w.translate(obj.getX(), obj.getY());
+        		w.scale(1, 1); // scale = 1
+        		g2d.drawImage(obj.getImage(),w, this);
+        	}
+        }
+        
+        //shell for tanker1 graph
+        if(tanker1.getShell()!=null) {
+        	for(Shell obj: tanker1.getShell()) {
+        		s.setTransform(initTrans);
+        		s.rotate(obj.getAngle(), obj.getX(), obj.getY());
+        		s.translate(obj.getX(), obj.getY());
+        		s.scale(1, 1); // scale = 1
+        		g2d.drawImage(obj.getImage(), s, this);
+        	}
+        }
+        
+        
 		//tanker1 Armor graph
 		gsc.setColor(Color.BLACK);
         gsc.drawRect((int)tanker1.getX()-10, (int)tanker1.getY()-20,40, 5);
@@ -210,23 +246,15 @@ public class Board extends JPanel implements ActionListener{
         	}
         }
         
-
-        //tanker2 graph
-        t2.rotate(tanker2.getAngle(), tanker2.getX()+tanker2.getWidth()/2, tanker2.getY()+tanker2.getHeight()/2);
-        t2.translate(tanker2.getX(), tanker2.getY());
-        t2.scale(1, 1); // scale = 1
-		g2d.drawImage(tanker2.getImage(), t2, this);
-		gsc.setColor(Color.BLACK);
+      	//tanker2 Armor graph\		gsc.setColor(Color.BLACK);
         gsc.drawRect((int)tanker2.getX()-10, (int)tanker2.getY()-20,40, 5);
       	gsc.setColor(Color.RED);
-      	//tanker2 Armor graph
         if(tanker2.getArmor() > 0) {
         	for(int i=(int)tanker2.getY()-20; i<(int)tanker2.getY()-20+5;i++) {
         		gsc.drawLine((int)tanker2.getX()-10,i,((int)tanker2.getX()+(int)((double)tanker2.getArmor()/(double)tanker2.getMAX_ARMOR()*40))-10,i);
         	}
         }
         //tanker2 Ammo graph
-        //tanker1 Ammo graph
         gsc.setColor(Color.GRAY);
         if(tanker2.getAmmo()>0) {
         	for(int i=(int)tanker2.getY()-15; i<(int)tanker2.getY()-15+2;i++) {
@@ -245,26 +273,6 @@ public class Board extends JPanel implements ActionListener{
         }
         
         
-        //wall graph
-        if(background.getwall()!=null) {
-        	for(Wall obj: background.getwall()) {
-        		w.setTransform(initTrans);
-        		w.translate(obj.getX(), obj.getY());
-        		w.scale(1, 1); // scale = 1
-        		g2d.drawImage(obj.getImage(),w, this);
-        	}
-        }
-        
-        //shell for tanker1 graph
-        if(tanker1.getShell()!=null) {
-        	for(Shell obj: tanker1.getShell()) {
-        		s.setTransform(initTrans);
-        		s.rotate(obj.getAngle(), obj.getX(), obj.getY());
-        		s.translate(obj.getX(), obj.getY());
-        		s.scale(1, 1); // scale = 1
-        		g2d.drawImage(obj.getImage(), s, this);
-        	}
-        }
         
         //shell for tanker2 graph
         if(tanker2.getShell()!=null) {
@@ -276,6 +284,29 @@ public class Board extends JPanel implements ActionListener{
         		g2d.drawImage(obj.getImage(), s, this);
         	}
         }
+        
+        //katsmin boostplatform graph
+        if(background.getBoostPlatformList() != null)
+        {
+        	for(BoostPlatform obj: background.getBoostPlatformList())
+        	{
+        		w.setTransform(initTrans);
+        		w.translate(obj.getX(), obj.getY());
+        		w.scale(1, 1);
+        		g2d.drawImage(obj.getImage(), w, this);
+        	}
+        }
+       
+        if(background.getKit()!=null) {
+        	for(Kit obj: background.getKit()) {
+        		w.setTransform(initTrans);
+        		w.translate(obj.getX(), obj.getY());
+        		w.scale(1, 1); // scale = 1
+        		g2d.drawImage(obj.getImage(),w, this);
+        	}
+        }
+
+        
         
         if(gamestatus!=NEXT) {
         	Graphics2D gwd = (Graphics2D)g;
@@ -356,11 +387,15 @@ public class Board extends JPanel implements ActionListener{
 			updateGameSet();
 			gamestatus = NEXT;
 		}
+		if(gamestatus == Board.PAUSE) {
+			returntoMenu();
+		}
 	}
 	
 	private void updateTanker() {
 		tanker1.move();
 		tanker2.move();
+		//Wall moving
 		for(Wall obj: background.getwall()) {
 			if(obj instanceof MoveWall) {
 				((MoveWall) obj).Move();
@@ -408,6 +443,7 @@ public class Board extends JPanel implements ActionListener{
 		tanker2.resetArmor();
     	tanker1.getShell().clear();
     	tanker2.getShell().clear();
+    	background.resetMap();
 		tanker1.setPosition(background.getp1StartX(),background.getp1StartY(), background.getp1StartA());
 		tanker2.setPosition(background.getp2StartX(),background.getp2StartY(), background.getp2StartA());
 		playerlist1.clear();
@@ -435,13 +471,17 @@ public class Board extends JPanel implements ActionListener{
 		}
 		
 		if(typename.equals("tank1")) {
-			temp = new Tank1(100,100, 3*Math.PI/4,background.getwall(),plylist, cset); 
+			temp = new Tank1(100,100, 3*Math.PI/4,background.getwall(),plylist, background.getKit(), cset); 
+			temp.setBoostList(background.getBoostPlatformList());
 		}
 		else if(typename.equals("tank2")) {
-			temp = new Tank2(100,100, 3*Math.PI/4,background.getwall(),plylist, cset); 
+			temp = new Tank2(100,100, 3*Math.PI/4,background.getwall(),plylist,background.getKit(), cset); 
+			temp.setBoostList(background.getBoostPlatformList());
+
 		}
 		else if(typename.equals("tank3")) {
-			temp = new Tank3(100,100, 3*Math.PI/4,background.getwall(),plylist, cset);
+			temp = new Tank3(100,100, 3*Math.PI/4,background.getwall(),plylist, background.getKit() ,cset);
+			temp.setBoostList(background.getBoostPlatformList());
 		}
 		else {
 			System.out.println("Tank selection error");
@@ -474,6 +514,7 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 	
+	
 	private class TAdapter extends KeyAdapter{
 		
 		@Override
@@ -486,9 +527,23 @@ public class Board extends JPanel implements ActionListener{
 		
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if(gamestatus != MENU) {
+			if(gamestatus != MENU && gamestatus != PAUSE) {
 				tanker1.keyPressed(e);
 				tanker2.keyPressed(e);
+				int key = e.getKeyCode();
+				if(key == KeyEvent.VK_ESCAPE) {
+					if(gamestatus == NEXT)
+						gamestatus = PAUSE;
+				}
+			}
+			else if (gamestatus == PAUSE) {
+				int key = e.getKeyCode();
+				if(key == KeyEvent.VK_ESCAPE) {
+					for(JButton obj: returnbtnlist) {
+						obj.setVisible(false);
+					}
+					gamestatus = NEXT;
+				}
 			}
 		}
 	}

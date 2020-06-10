@@ -78,20 +78,5 @@ public class MoveWall extends Wall{
 		}else if(getY()<=190){
 			turny=0;
 		}
-		
-		
-		
-		
-		
-			
-		
-		
-		
-		
-			
-		
-		
-		
-		
 	}
 }
