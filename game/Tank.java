@@ -117,11 +117,6 @@ public abstract class Tank {
 	
 	public void move() {
 		
-//		if(keybuffer.contains(controlset.get(3)))
-//			da = 1.5*Math.toRadians(this.getROTATION_RAD());
-//		if(keybuffer.contains(controlset.get(2)))
-//			da = 1.5*Math.toRadians(-this.getROTATION_RAD());
-		
 		if(this.ammo == 0) {
 			if(System.currentTimeMillis() >= CD) {
 				this.ammo = this.getMAX_AMMO();
@@ -187,11 +182,10 @@ public abstract class Tank {
 		
 		if(detectKitCollision(kitlist))
 		{
-			System.out.println("Get kit!");
-			if(armor+5 < this.getArmor()) {
-				this.armor +=500;
+			if(this.getArmor()+500 < this.getMAX_ARMOR()) {
+				this.setArmor(this.getArmor()+500);
 			}
-			else if(armor+500 >= this.getArmor()){
+			else if(this.getArmor()+500 >= this.getMAX_ARMOR()){
 				this.resetArmor();
 			}
 		}
@@ -323,6 +317,9 @@ public abstract class Tank {
 	protected void resetArmor() {
 		this.armor = getMAX_ARMOR();
 		ammo = getMAX_AMMO();
+	}
+	protected void setArmor(int h) {
+		this.armor = h;
 	}
 	protected void setPosition(double px, double py, double pangle) {
 		this.x = px;

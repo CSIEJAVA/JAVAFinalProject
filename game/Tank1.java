@@ -8,10 +8,10 @@ public class Tank1 extends Tank{
 
 	final private int MAX_HEALTH=1200;
 	final private double ROTATION_RAD = 0.65;
-	final private double MOVING_SPEED = 1;
+	final private double MOVING_SPEED = 1.2;
 	final private int MAX_AMMO = 5;
 	final private int CD_AMMO = 6;
-	final private int DAMAGE = 250;
+	final private int DAMAGE = 150;
 	final private int SHELL_SPEED = 10;
 	final private long REFILL_CD = 5000;
 	

@@ -72,7 +72,7 @@ public class Board extends JPanel implements ActionListener{
 		
 		
 		JButton playButton = new JButton("Play");
-		playButton.setBounds(325, 100, 100, 60);
+		playButton.setBounds(315, 100, 100, 60);
 		this.add(playButton);
 		playButton.addActionListener(BtnListen);
 
@@ -87,13 +87,13 @@ public class Board extends JPanel implements ActionListener{
 		lastmap.addActionListener(BtnListen);
 		
 		JButton returnButton = new JButton("return to Menu");
-		returnButton.setBounds(275, 200, 250, 60);
+		returnButton.setBounds(250, 200, 250, 60);
 		this.add(returnButton);
 		returnButton.addActionListener(BtnListen);
 		returnButton.setVisible(false);
 		
 		JButton restartButton = new JButton("restart");
-		restartButton.setBounds(275, 300, 250, 60);
+		restartButton.setBounds(250, 300, 250, 60);
 		this.add(restartButton);
 		restartButton.addActionListener(BtnListen);
 		restartButton.setVisible(false);
@@ -399,7 +399,6 @@ public class Board extends JPanel implements ActionListener{
 		for(Wall obj: background.getwall()) {
 			if(obj instanceof MoveWall) {
 				((MoveWall) obj).Move();
-				System.out.println(obj.getX());
 			}
 		}
 	}

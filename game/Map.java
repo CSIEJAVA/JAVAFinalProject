@@ -138,17 +138,56 @@ public class Map {
 			wallist.add(w2);
 			wallist.add(w3);
 		}
-		if(mapname.equals("test1")) {
+		if(mapname.equals("Duel")) {
+			setP1start(300,250, 6*Math.PI/4);
+			setP2start(400,250, -6*Math.PI/4);
+			Wall w4 = new Wall(340, 475,"src/resources/2dtree.jpg");
+			Wall w5 = new Wall(340, 100, "src/resources/2dtree.jpg");
+			Wall w6 = new Wall(340, 350, "src/resources/2dtree.jpg");
+			Wall w1 = new Wall(325, 150,"src/resources/bedrock.png");
+			Wall w2 = new Wall(325, 50, "src/resources/bedrock.png");
+			Wall w3 = new Wall(325, 300, "src/resources/bedrock.png");
+			Wall w7 = new Wall(125, 50, "src/resources/bedrock.png");
+			Wall w8 = new Wall(525, 50, "src/resources/bedrock.png");
+			Wall w9 = new Wall(125, 375, "src/resources/bedrock.png");
+			Wall w10 = new Wall(225, 350, "src/resources/bedrock.png");
+			Wall w11 = new Wall(525, 375, "src/resources/bedrock.png");
+			Wall w12 = new Wall(425, 350, "src/resources/bedrock.png");
+			Wall wt1 = new Wall(350, 350, "src/resources/semiwater2.jpg");
+			wt1.setIgnoreShell();
+			wallist.add(wt1);
+			wallist.add(w1);
+			wallist.add(w2);
+			wallist.add(w3);
+			wallist.add(w7);
+			wallist.add(w8);
+			wallist.add(w9);
+			wallist.add(w10);
+			wallist.add(w11);
+			wallist.add(w12);
+			wallist.add(w4);
+			wallist.add(w5);
+			wallist.add(w6);
+			
+			kitlist.add(new Kit(345,525));
+			kitlist.add(new Kit(345,0));
+			kitlist.add(new Kit(0,220));
+			kitlist.add(new Kit(706,220));
+			
+			int[] cloudpos = {180,410,480,410,270,170,370,280,100,70,550,70};
+			DrawBoostArea("Duel", cloudpos, "src/resources/cloud.png");
+		}
+		if(mapname.equals("River")) {
 			setP1start(100,280, 2*Math.PI/4);
-			setP2start(560,280, -2*Math.PI/4);
+			setP2start(615,280, -2*Math.PI/4);
 			Wall w1 = new Wall(150, 250, "src/resources/bedrock.png");
-			Wall w2 = new Wall(450, 250, "src/resources/bedrock.png");
-			Wall wt1 = new Wall(300,400, "src/resources/water.jpg");
-			Wall wt2 = new Wall(300,300, "src/resources/water.jpg");
-			Wall wt3 = new Wall(300,200, "src/resources/water.jpg");
-			Wall wt4 = new Wall(300,100, "src/resources/water.jpg");
-			Wall wt5 = new Wall(300,0, "src/resources/water.jpg");
-			Wall wt6 = new Wall(300,500, "src/resources/water.jpg");
+			Wall w2 = new Wall(500, 250, "src/resources/bedrock.png");
+			Wall wt1 = new Wall(320,400, "src/resources/water.jpg");
+			Wall wt2 = new Wall(320,300, "src/resources/water.jpg");
+			Wall wt3 = new Wall(320,200, "src/resources/water.jpg");
+			Wall wt4 = new Wall(320,100, "src/resources/water.jpg");
+			Wall wt5 = new Wall(320,0, "src/resources/water.jpg");
+			Wall wt6 = new Wall(320,500, "src/resources/water.jpg");
 			wt1.setIgnoreShell();
 			wt2.setIgnoreShell();
 			wt3.setIgnoreShell();
@@ -164,23 +203,53 @@ public class Map {
 			wallist.add(wt5);
 			wallist.add(wt6);
 			
-			kitlist.add(new Kit(250, 250));
-			kitlist.add(new Kit(50,50));
-			kitlist.add(new Kit(50,250));
-			kitlist.add(new Kit(400, 250));
-			kitlist.add(new Kit(400,50));
-			kitlist.add(new Kit(475,250));
-			this.DrawBoostArea("test1", null, "src/resources/cloud.png");
+			kitlist.add(new Kit(250,50));
+			kitlist.add(new Kit(450,50));
+			kitlist.add(new Kit(450,450));
+			kitlist.add(new Kit(250,450));
 		}
-		if(mapname.equals("test2")) {
+		if(mapname.equals("Forest")) {
 			setP1start(100,100, 3*Math.PI/4);
 			setP2start(600,500, -Math.PI/4);
-			Wall w1 = new Wall(400, 388, "src/resources/xx.png");
-			Wall w2 = new Wall(444,333, "src/resources/bedrock.png");
+			Wall w1 = new Wall(400, 388, "src/resources/2dtree.jpg");
+			Wall w2 = new Wall(0,50, "src/resources/2dtree.jpg");
+			Wall w3 = new Wall(150,0, "src/resources/2dtree.jpg");
+			Wall w4 = new Wall(250,50, "src/resources/2dtree.jpg");
+			Wall w5 = new Wall(350,70, "src/resources/2dtree.jpg");
+			Wall w6 = new Wall(450,50, "src/resources/2dtree.jpg");
+			Wall w7 = new Wall(550,20, "src/resources/2dtree.jpg");
+			Wall w8 = new Wall(650,50, "src/resources/2dtree.jpg");			
+			Wall w9 = new Wall(0,50, "src/resources/2dtree.jpg");
+			Wall w10 = new Wall(150,250, "src/resources/2dtree.jpg");
+			Wall w11 = new Wall(250,350, "src/resources/2dtree.jpg");
+			Wall w12 = new Wall(350,250, "src/resources/2dtree.jpg");
+			Wall w13 = new Wall(450,550, "src/resources/2dtree.jpg");
+			Wall w14 = new Wall(550,250, "src/resources/2dtree.jpg");
+			Wall w15 = new Wall(650,150, "src/resources/2dtree.jpg");
+			Wall w16 = new Wall(250, 450, "src/resources/bedrock.png");
 			wallist.add(w1);
 			wallist.add(w2);
+			wallist.add(w3);
+			wallist.add(w4);
+			wallist.add(w5);
+			wallist.add(w6);
+			wallist.add(w7);
+			wallist.add(w8);		
+			wallist.add(w9);
+			wallist.add(w10);
+			wallist.add(w11);
+			wallist.add(w12);
+			wallist.add(w13);
+			wallist.add(w14);
+			wallist.add(w15);
+			wallist.add(w16);
+			
+			kitlist.add(new Kit(300,300));
+			
+			int[] cloudpos = {450,145,345,145,245,145,175,145,45,145,40,450,100,450,75,350,550,350,450,270,450,430};
+			DrawBoostArea("Forest", cloudpos, "src/resources/cloud.png");
 		}
-		if(mapname.equals("Monster")) {
+		if(mapname.equals("Move")) {
 			setP1start(100,100, 3*Math.PI/4);
 			setP2start(600,500, -Math.PI/4);
 			MoveWall w1 = new MoveWall(100, 180,"src/resources/bedrock.png");
@@ -237,7 +306,7 @@ public class Map {
 			kitlist.add(new Kit(300,300));
 			
 			int[] cloudpos = {450,145,345,145};
-			DrawBoostArea("Monster", cloudpos, "src/resources/cloud.png");
+			DrawBoostArea("Move", cloudpos, "src/resources/cloud.png");
 		}
 	}
 	//katsmin

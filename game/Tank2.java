@@ -11,7 +11,7 @@ public class Tank2 extends Tank{
 	final private double MOVING_SPEED = 0.65;
 	final private int MAX_AMMO = 1;
 	final private int CD_AMMO = 3;
-	final private int DAMAGE = 300;
+	final private int DAMAGE = 500;
 	final private int SHELL_SPEED = 20;
 	final private long REFILL_CD = 3000;
 	
